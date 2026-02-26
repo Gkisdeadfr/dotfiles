@@ -46,6 +46,7 @@ vim.cmd [[highlight Comment guifg=#00FF00 ctermfg=Green]]
 
 
 
+
 vim.diagnostic.config({
   virtual_text = false,  -- disable inline error messages
   float = {

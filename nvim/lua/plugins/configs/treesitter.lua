@@ -8,6 +8,9 @@ local options = {
     "c",
     "javascript",
     "typescript",
+    "html",
+    "css",
+    "json",
     "jsonc",
   },
 

@@ -9,4 +9,6 @@ M.ui = {
   }, hl_override = require("custom.highlights").override,
 }
 
+M.plugins = "custom.plugins"
+
 return M
