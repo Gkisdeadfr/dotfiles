@@ -97,3 +97,58 @@ require("lazy").setup({
   { "hrsh7th/nvim-cmp" },
   { "hrsh7th/cmp-nvim-lsp" },
 })
+
+-- bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- plugins
+require("lazy").setup({
+  {
+    "akinsho/flutter-tools.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim",
+    },
+    config = function()
+      require("flutter-tools").setup({
+        ui = { border = "rounded" },
+      })
+    end,
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+  },
+
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+})
+
+-- basic LSP + completion (flutter-tools handles dartls for you)
+local cmp = require("cmp")
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = {
+    { name = "nvim_lsp" },
+  },
+})
+
+-- Optional keymaps for Flutter
+vim.keymap.set("n", "<leader>fr", ":FlutterRun<CR>")
+vim.keymap.set("n", "<leader>fh", ":FlutterReload<CR>")
+vim.keymap.set("n", "<leader>fR", ":FlutterRestart<CR>")
+vim.keymap.set("n", "<leader>fd", ":FlutterDevices<CR>")
+vim.keymap.set("n", "<leader>ft", ":FlutterDevTools<CR>")
