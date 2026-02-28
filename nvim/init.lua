@@ -58,3 +58,42 @@ vim.diagnostic.config({
     wrap = true,         -- <- enables wrapping inside the float
   },
 })
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Plugins (Flutter + essentials)
+require("lazy").setup({
+  {
+    "akinsho/flutter-tools.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim",
+    },
+    config = function()
+      require("flutter-tools").setup({
+        ui = { border = "rounded" },
+        debugger = { enabled = true },
+        widget_guides = { enabled = true },
+        dev_log = { enabled = true, open_cmd = "tabedit" },
+      })
+    end,
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+  },
+
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+})
